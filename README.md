@@ -9,9 +9,9 @@ The team is composed by:
 
 ## Main Idea
 
-**Safety Floater** is a smart floater with the purpose to detect the **illegal transit** of the **boats** near by swimmers, in order to preserve the safe distance. This system allows to the authorities to monitor coasts and tourists' welfare. At the same time, Safety Floater allows achieve another goal in an indirect way: improve the water pollution near the coast.
+"Smart Irrigation" is a smart system with the purpose to optimize the usage of water for the irrigation of plants. This system allows people to monitor the growth of plants in small environments. At the same time, by using the correct quantity of water we are also improving the growth of plants.
 
-In future, the system could be used to monitor the state of the sea and to improve the prevention of the illegal traffic of boats by installing a camera in order to get a photo of who break the rules.
+In future, the system could be extended from small plants located in jars into a wider environment like farms or rural areas.
 
 ## Documents
 
