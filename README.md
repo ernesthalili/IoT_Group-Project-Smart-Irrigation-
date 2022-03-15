@@ -5,7 +5,7 @@
 The team is composed by:
 - Carlo Carugno [Linkedin Profile](https://www.linkedin.com/in/carlo-carugno-b50331142/)
 - Ernest Halili  [Linkedin Profile](https://www.linkedin.com/in/ernest-halili-a9b37b19a/)
-- Christian Tedesco [Linkedin Profile](http://www.linkedin.com/in/christian-tedesco/)
+- Christian Tedesco [Linkedin Profile](https://www.linkedin.com/in/christian-tedesco/)
 
 ## Main Idea
 
