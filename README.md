@@ -15,9 +15,9 @@ In future, the system could be extended from small plants located in jars into a
 
 ## Documents
 
-- [Concept](https://github.com/ernesthalili/IoT_Group-Project/blob/main/concept.md)
-- [Technology](https://github.com/ernesthalili/IoT_Group-Project/blob/main/technology.md)
-- [Evaluation](https://github.com/ernesthalili/IoT_Group-Project/blob/main/evaluation.md)
+- [Concept](https://github.com/ernesthalili/IoT_Group-Project/blob/main/Concept.md)
+- [Technology](https://github.com/ernesthalili/IoT_Group-Project/blob/main/Technology.md)
+- [Evaluation](https://github.com/ernesthalili/IoT_Group-Project/blob/main/Evaluation.md)
 
 
 ## Videos
