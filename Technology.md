@@ -141,28 +141,28 @@ method for data preprocessing.
 
 ![F8029425-01](https://user-images.githubusercontent.com/96237399/159165481-b6815bd4-fa2d-459c-95cc-ee73c7a17801.jpg)
 
-• Microcontroller: STM32F401RET6 (32-bit)
-• Architecture: ARM Cortex M4 CPU with FPU
-• Power consumption: 2.4uA at standby without RTC
-• CPU Frequency: 84 MHz
-• Crystal Oscillator Range: 4 to 26 MHz
-• MCU Operating Voltage (VDD): 1.7V to 3.6V
-• Board Operating Voltage (VIN): 7V to 15V
-• Flash Memory: 512KB
-• SRAM: 96 KB
-• GPIO Pins: 50
-• ADC: 12-bit 16Channel
-• RTC: In-built 32kHz with calibration
-• Timers :
-    • 16-bit (6)
-    • 32-bit (2)
-• Watchdog Timers: 2
-• USART/UART Communication: 4
-• I2C Communication: 3
-• SPI Communication: 3
-• USB2.0 Support: Yes
-• Internal Crystal Oscillator: Yes, 16MHz
-• On Board Debugger: Yes, Serial Wire and JTAG 
+    • Microcontroller: STM32F401RET6 (32-bit)
+    • Architecture: ARM Cortex M4 CPU with FPU
+    • Power consumption: 2.4uA at standby without RTC
+    • CPU Frequency: 84 MHz
+    • Crystal Oscillator Range: 4 to 26 MHz
+    • MCU Operating Voltage (VDD): 1.7V to 3.6V
+    • Board Operating Voltage (VIN): 7V to 15V
+    • Flash Memory: 512KB
+    • SRAM: 96 KB
+    • GPIO Pins: 50
+    • ADC: 12-bit 16Channel
+    • RTC: In-built 32kHz with calibration
+    • Timers :
+        • 16-bit (6)
+        • 32-bit (2)
+    • Watchdog Timers: 2
+    • USART/UART Communication: 4
+    • I2C Communication: 3
+    • SPI Communication: 3
+    • USB2.0 Support: Yes
+    • Internal Crystal Oscillator: Yes, 16MHz
+    • On Board Debugger: Yes, Serial Wire and JTAG 
  
     
 ### UBUNTU Server
