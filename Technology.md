@@ -1,19 +1,22 @@
-#### Technology
+# Technology
 
-### Smart Irrigation System
+## Smart Irrigation System
+This component is the main part of our system. The main purpose is to **irrigate the necessary amount of water** to the plants. When the level of the soil moisture is decreased in a critical state, the **Soil moisture sensor(Adafruit Seesaw)** provides this value to the central unit which activates the **pump of water(Submersible Water Pump)**. For every read of the sensors, all the data is sent to the server using the **wifi connection**. Instead on the **OLED display** we will show the last value read by the sensor. All the sensors and actuators are controlled by a **Nucleo Board(stm32-f401re)** with **RIOT Operating System**.
 
+## Web Dashboard
+It is the highest level component of our system, composed of a **remote server**(AWS and NodeJS are used) and a **frontend page**(HTML, Bootstrap, javascript) where data will be displayed for the user. All the data the system takes from the sensors are stored in a **DynamoDB**. 
 
-### IoT Architecture
+## IoT Architecture
 
 
 <img width="777" alt="Screenshot 2022-03-20 at 14 55 15" src="https://user-images.githubusercontent.com/96237399/159165876-55e59552-4a00-490b-82ba-22a59c00d43c.png">
 
 
-### Sensors and Actuators
+## Sensors and Actuators
 
 There is presented a list of possible sensors and actuators for our system
 
-## DHT22 temperature and humidity sensor
+### DHT22 temperature and humidity sensor
 
 DHT22 temperature and humidity sensor is used to measure environment temperature and humidity in order to provide, according to the weather conditions, the right amount of water necessary for the plant’s growth.
 
@@ -34,7 +37,7 @@ DHT22 temperature and humidity sensor is used to measure environment temperature
     • Interchangeability fully interchangeable 
     • Dimensions small size 14*18*5.5mm; big size 22*28*5mm 
     
-## Soil moisture sensor
+### Soil moisture sensor
 
 Soil moisture sensor is used to measure the soil moisture in order to provide, according to the soil conditions, the right amount of water necessary for the plant’s growth.
 
@@ -50,7 +53,7 @@ Soil moisture sensor is used to measure the soil moisture in order to provide, a
     • Weight 15g
     • Pin: analog signal output, GND, VCC
     
-## 2 Channel relay module
+### 2 Channel relay module
 
  Channel relay module is used to trigger the water pump.
  
@@ -65,7 +68,7 @@ Soil moisture sensor is used to measure the soil moisture in order to provide, a
     • Input signal 3-5 V for each channel
     • Three pins are normally open and closed for each channel
     
-## OLED Display
+### OLED Display
 
 Oled display allows you to show the soil and weather conditions provided by sensors. In order to have an efficient system il display won't be always turned on but only sometimes per day.
 
@@ -88,7 +91,7 @@ Oled display allows you to show the soil and weather conditions provided by sens
     • Dimensions: 35.4 X 33.5mm
     • Weight: 5.7g
     
-## Water pump
+### Water pump
 
 Water pump is activated according to the values provided by sensors. Trigger by relay module, the water pump will take the right water amount to irrigate the plants.
 
@@ -106,9 +109,9 @@ Water pump is activated according to the values provided by sensors. Trigger by 
     • Weight: 28g   
     
     
-### COMMUNICATION
+## COMMUNICATION
 
-## Wifi Module (ESP-01S ESP8266)
+### Wifi Module (ESP-01S ESP8266)
 
 Used as communication module to get access to the internet.
 
@@ -165,11 +168,11 @@ method for data preprocessing.
     • On Board Debugger: Yes, Serial Wire and JTAG 
  
     
-### UBUNTU Server
+## UBUNTU Server
 
 An Ubuntu server will be hosted on the AWS cloud to run the MQTT broker service
     
-### Web Dashboard
+## Web Dashboard
 
 Web dashboard is used as platform to display the dataset in visual form. With Web
 dashboard the end user can also send command back to actuators whether to take
