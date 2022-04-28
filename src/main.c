@@ -82,7 +82,7 @@ void read_temperature_humidity(){ //dht22 sensor
     size_t c = fmt_s16_dfp(hum_s, hum, -1);
     hum_s[c] = '\0';
 
-    // TODO WRITE THE LOGIC THAT MODIFIES THE SOIL PERIOD
+    // THE LOGIC THAT MODIFIES THE SOIL PERIOD
     if( temp < THRESHOLD_TEMPERATURE){
         soil_period = 12;
     }
@@ -123,7 +123,7 @@ void read_soil(){ //soil sensor
     len = fmt_u16_dec(mstr, moist);
     mstr[len] = '\0';
 
-    // todo implement the logic that activates the relay
+    // the logic that activates the relay
     if (moist < THRESHOLD_HUMIDITY ) irrigate();
 
     // todo send messages to LoraWan
