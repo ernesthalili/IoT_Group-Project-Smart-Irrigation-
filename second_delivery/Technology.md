@@ -69,25 +69,27 @@ This display allows you to show the soil and weather conditions provided by sens
 
 <img width="276" alt="image" src="ili9341_display.png">
 
-Display resolution: 240 x 320 (RGB)
-Output: 720 source outputs | 320 gate outputs | Common electrode output (VCOM)
-a-TFT LCD driver with on-chip full display RAM: 172,800 bytes
-System Interface
-8-bits, 9-bits, 16-bits, 18-bits interface with 8080-Ⅰ/8080- Ⅱ series MCU
-6-bits, 16-bits, 18-bits RGB interface with the graphic controller
-3-line / 4-line serial interface
-Display mode:
-Full-color mode (Idle mode OFF): 262K-color 
-Reduced color mode (Idle mode ON): 8-color
-Power saving modes: 
-Sleep mode 
-Deep standby mode
-Content Adaptive Brightness Control
-MTP (3 times): 
-8-bits for ID1, ID2, ID3 
-7-bits for VCOM adjustment  
-Low-power consumption architecture
-Operate temperature range: -40℃ to 85℃
+    •Display resolution: 240 x 320 (RGB)
+    •Output: 720 source outputs
+        320 gate outputs  
+        Common electrode output (VCOM)  a-TFT LCD driver with on-chip full display
+        RAM: 172,800 bytes
+    •System Interface
+        8-bits, 9-bits, 16-bits, 18-bits interface with 8080-Ⅰ/8080- Ⅱ series MCU
+        6-bits, 16-bits, 18-bits RGB interface with the graphic controller
+        3-line / 4-line serial interface
+    •Display mode:
+    •Full-color mode (Idle mode OFF): 262K-color 
+    •Reduced color mode (Idle mode ON): 8-color
+    •Power saving modes: 
+    •Sleep mode 
+    •Deep standby mode
+    •Content Adaptive Brightness Control
+    •MTP (3 times): 
+        8-bits for ID1, ID2, ID3 
+        7-bits for VCOM adjustment  
+    •Low-power consumption architecture
+    •Operate temperature range: -40℃ to 85℃
 
 
 
