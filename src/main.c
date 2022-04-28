@@ -21,6 +21,21 @@
 #include "main.h"
 
 
+#define THRESHOLD_TEMPERATURE 25  // CELCIUS DEGREE
+#define THRESHOLD_HUMIDITY 30  // IN PERCENTAGE 
+#define IRRIGATION_TIME 5 // TIME IN SECONDS
+
+#define TEMP_PERIOD 2 // IN REALITY IT SHOULD BE 2 HOURS = 2 * 60 * 60 = 7 200 SECONDS  
+
+// ! VARIABLE PERIOD
+int soil_period = 6;  // 6 HOURS = 21 600 SECONDS  
+
+
+
+//Definition of Array used as Stack by threads
+static char stack[THREAD_STACKSIZE_DEFAULT];
+static char temperature_stack[THREAD_STACKSIZE_DEFAULT];
+static char soil_stack[THREAD_STACKSIZE_DEFAULT];
 
 //dht22 sensor
 dht_t dev;
@@ -50,7 +65,7 @@ u8x8_riotos_t user_data =
 };
 
 
-void read_temperature_humidity(void){ //dht22 sensor
+void read_temperature_humidity(){ //dht22 sensor
     int16_t temp, hum;
 
     if (dht_read(&dev, &temp, &hum) != DHT_OK) {
@@ -67,22 +82,33 @@ void read_temperature_humidity(void){ //dht22 sensor
     size_t c = fmt_s16_dfp(hum_s, hum, -1);
     hum_s[c] = '\0';
 
+    // TODO WRITE THE LOGIC THAT MODIFIES THE SOIL PERIOD
+    if( temp < THRESHOLD_TEMPERATURE){
+        soil_period = 12;
+    }
+    else{
+        soil_period = 6;
+    }
+
+    // todo send messages to LoraWan
+
+    // todo display the read values
         
     printf("DHT values - temp: %s°C - relative humidity: %s%%\n",temp_s, hum_s);
 }
 
 
-void irrigate(void){ //relay water pump
+void irrigate(){ //relay water pump
     printf("Turn-off water pump\n");
     gpio_clear(pin_relay);
-    xtimer_sleep(2);
+    xtimer_sleep(IRRIGATION_TIME);
     printf("Turn-off water pump\n");
     gpio_set(pin_relay);
 
 }
 
 
-void read_soil(void){ //soil sensor
+void read_soil(){ //soil sensor
     size_t len;
     int16_t temp;
     uint16_t moist;
@@ -96,6 +122,12 @@ void read_soil(void){ //soil sensor
 
     len = fmt_u16_dec(mstr, moist);
     mstr[len] = '\0';
+
+    // todo implement the logic that activates the relay
+    if (moist < THRESHOLD_HUMIDITY ) irrigate();
+
+    // todo send messages to LoraWan
+    // todo display the read values
 
     printf("Reading: T: %s °C  Moist: %s\n", tstr, mstr);
     xtimer_sleep(5);
@@ -115,7 +147,20 @@ void write_display(char* message){ //Display
 }
 
 
-void init_components(void){ //initialize all components
+/*int configuration_lw(){
+
+
+    return 0;
+}*/
+
+
+/*int send_message(char* message){
+
+
+    return 0;
+}*/
+
+void init_components(){ //initialize all components
 //dht22 sensor inizialization
     if (dht_init(&dev, &dht_params) == DHT_OK){
         printf("DHT22 sensor connected\n");
@@ -149,16 +194,21 @@ void init_components(void){ //initialize all components
 
 int main(void){
     
-    init_components();
+    puts("Starting Up\n");
 
-    while(1){
-        read_temperature_humidity();
-        read_soil();
-        write_display();
-
-        xtimer_sleep(100);  // time to sleep after every read
-
+    // components init
+    if(init_components() == -1){
+        printf("Failed to Initialize Components\n");
+        return 1;
     }
+
+    //Starting Thread that handles temperature and humidity measurement
+    thread_create(temperature_stack,sizeof(temperature_stack),THREAD_PRIORITY_MAIN - 1, 0,read_temperature_humidity, NULL, "temp_sensor_logic");
+    puts("Temperature Thread Started");
+
+    //Starting Thread that handles soil moisture measurement
+    thread_create(soil_stack,sizeof(soil_stack),THREAD_PRIORITY_MAIN -1, 0,read_soil, NULL, "soil_sensor_logic");
+    puts("Soil Thread Started");
     
     return 0;
 }
