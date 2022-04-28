@@ -5,15 +5,15 @@ In the system, we will have 2 types of computations. Locally we will have a logi
 The user can monitor the system state and can visualize the statistics provided from the cloud. Every time there will be shown the most recent sent values of the air temperature and soil moisture level of the ground around the palace where the plants are located.
 
 
-TODO: replace this line with the scheme of how the components are wired all together
-
+<img src = "fritzing.png">
 
 ## LoRaWAN board
 The module is powered by an STM32L072CZ microcontroller that incorporates the connectivity power of the universal serial bus (USB 2.0 crystal-less) with the high-performance Arm Cortex-M0+ 32-bit RISC core operating at a 32 MHz frequency and SX1276 transceiver that features the LoRa long-range modem, providing ultra-long-range spread-spectrum communication and high interference immunity, minimizing current consumption.
 We changed the decision to use Wifi Module (ESP-01S ESP8266) since it has a higher power consumption. It consumes 70.89 mA if the node is on active mode and 0.25 mA when the sleep mode is activated. Instead, the SX1276 transceiver consumes around 10 mA during the active mode. 
 To communicate with TTN(The Things Network) we will use the LoRa module as a communication protocol. Afterwards, we will integrate the TTN with AWS IoT Core in order to receive messages in the Broker on AWS. Some parameters must be set up before communicating: dev_eui, app_eui, app_key. 
 
-<img src=”lora_board.jpg”>
+
+<img width="276" alt="image" src="lora_board.png">
 
 
 ## DHT22 temperature and humidity sensor
@@ -39,7 +39,7 @@ DHT22 temperature and humidity sensor is used to measure air temperature and hum
 ## Adafruit Seesaw Soil moisture sensor
 A soil moisture sensor is used to measure the soil moisture in order to provide, according to the soil conditions, the right amount of water necessary for the plant’s growth when needed.
 
-<img width="381" alt="Screenshot 2022-03-20 at 15 11 06" src="https://user-images.githubusercontent.com/96237399/159166696-30cfc39f-ea52-4960-a255-588bd2d76027.png">
+<img width="276" alt="image" src="https://user-images.githubusercontent.com/96237399/159166696-30cfc39f-ea52-4960-a255-588bd2d76027.png">
 
     • Operating voltage: 3.3 ~ 5.5 VDC
     • Output voltage: 0 ~ 3.0 VDC
@@ -53,7 +53,7 @@ A soil moisture sensor is used to measure the soil moisture in order to provide,
 
 As we mentioned before, the sampling rate will be variable and will depend on the temperature we are measuring by the dht22 sensor. 
 
-<img src=”soil_moisture_level_for_different_textures.jpg”>
+<img src="soil_moisture_level_for_different_textures.png">
 
 Since on average the plants need to be irrigated once a day, we will sample with double that frequency. So the sampling period will be 12 hours. However there might be periods of time that the temperature will be very high, so the check over the humidity level must be more frequent, so the sampling period will be 6 hours. 
 To sum up, we have two situations:
@@ -67,7 +67,7 @@ Hot days: sampling period = 6 hours
 ## TFT ILI9341 LCD display
 This display allows you to show the soil and weather conditions provided by sensors. In order to have an efficient system, we will use the power saving modes of the display.
 
-<img src=”ili9341_display.png”>
+<img width="276" alt="image" src="ili9341_display.png">
 
 Display resolution: 240 x 320 (RGB)
 Output: 720 source outputs | 320 gate outputs | Common electrode output (VCOM)
@@ -95,7 +95,7 @@ Operate temperature range: -40℃ to 85℃
 A channel relay module is used to trigger the water pump.
  
 
-<img width="365" alt="Screenshot 2022-03-20 at 15 07 52" src="https://user-images.githubusercontent.com/96237399/159166467-4ff64821-48b7-46e7-be1d-d2a96185cac2.png">
+<img width="276" alt="image" src="https://user-images.githubusercontent.com/96237399/159166467-4ff64821-48b7-46e7-be1d-d2a96185cac2.png">
 
      
     • Contact current 10A and 250V AC or 30V DC
@@ -112,7 +112,7 @@ The water pump is activated according to the values provided by sensors. Trigger
 Depending on the plant type and it’s grown phase, we must decide the correct parameters.
 However to test the system, we will irrigate for 5 seconds every time.
 
-<img width="272" alt="Screenshot 2022-03-20 at 15 12 17" src="https://user-images.githubusercontent.com/96237399/159166704-92702612-6f3b-4d34-bbe6-15ca21031653.png">
+<img width="276" alt="image" src="https://user-images.githubusercontent.com/96237399/159166704-92702612-6f3b-4d34-bbe6-15ca21031653.png">
 
     • Operating Voltage: 3-5 V
     • Operating Current: 100 - 200 mA
