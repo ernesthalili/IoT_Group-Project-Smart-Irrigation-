@@ -38,4 +38,3 @@ In future, the system could be extended from small plants located in jars into a
 ## Blog post
 
 [Blog post](LINK HERE)
-
