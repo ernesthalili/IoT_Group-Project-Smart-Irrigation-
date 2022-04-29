@@ -19,7 +19,7 @@ seesaw adafruit = 5 mA
 relay = 135 mA
 TFT ILI9341 LCD display = 30 mA
 
-Battery lifetime = Capacity / Current Intensity
+**Battery lifetime = Capacity / Current Intensity**
  
 ###### first approach
 The first approach we considered was the one in which the sensors continuously sample, the relay pump is activated only twice a day(for irrigation purpose only) and the display is always on.
@@ -31,7 +31,7 @@ Seesaw | 5 | 100%
 ILI9341 | 30 | 100% 
 relay | 135 | ~ 0.001% 
 
-Total: 1,5* 1 + 5* 1 + 30* 1 + 135* 0.000001 ≈ 36,5 mA
+Total: 1,5* 1 + 5* 1 + 30* 1 + 135* 0.000001 ≈ 36,5 mA.
 With the battery of 3750 mA our system would last: 3750 mAh / 36,5mA = 103 hours ( something more than 4 days). This a very bad result since it doesn't satisfy the requirement to last at least one year. However it will not be necessary to continuously sample since the variation of the air temperature and soil moisture is not very high.
  
 ###### second approach
@@ -44,7 +44,7 @@ Seesaw | 5 | ~ 0.009%
 ILI9341 | 30 | 100% 
 relay | 135 | ~ 0.001% 
 
-Total = 1,5* 0,0003 + 5* 0,00009 + 30* 1 + 135* 0,000001 ≈ 30,005 mA
+Total = 1,5* 0,0003 + 5* 0,00009 + 30* 1 + 135* 0,000001 ≈ 30,005 mA.
 With the battery of 3750 mA our system would last: 3750 mAh / 30,005 mA = 125 hours (5 days)
 Still we do not have good result. Notice that the major part of the consumption comes from the display which has always been active.By trying to reduce the active time od the display we for sure will have better results.
 
@@ -59,7 +59,7 @@ Seesaw | 5 | ~ 0.009%
 ILI9341 | 30 | ~ 1,6% 
 relay | 135 | ~ 0.001% 
 
-Total = 1,5* 0,0003 + 5* 0,00009 + 30* 0,016 + 135* 0,000001 ≈ 0,505 mA
+Total = 1,5* 0,0003 + 5* 0,00009 + 30* 0,016 + 135* 0,000001 ≈ 0,505 mA.
 With the battery of 3750 mA our system would last: 3750 mAh / 0,505 mA = 7425 hours ( around 309 days)
 This approach meets the requirement of making the battery last for almost 1 year.
 

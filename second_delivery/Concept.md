@@ -5,10 +5,10 @@ The product created is a Smart Irrigation System for plants using Temperature, a
 
 ## Problem
 In every house, everyday, liters of water are wasted for any kind of use: dishwashers, personal hygiene, washing machine, irrigating. The problem we are focusing on is the one related to irrigating. People waste on an average 25 liters of water everyday only for irrigating purposes.
-<img src="water_waste.png">
+<img src="images/water_waste.png">
 
 ## Possible solution
 Why using an IoT system?
 An IoT solution can prevent the waste by controlling with accurate sensors the quantity of water needed. This will be completely autonomous and will avoid any external action for the user. This system could be perfect for people that live in apartments, that can irrigate their plants that are located on the balcony without any stress.
 By doing this the waste of water will be reduced up to 70% since the water will be given only if required.
-<img src="waste_solution.png">
+<img src="images/waste_solution.png">
