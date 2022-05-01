@@ -1,19 +1,19 @@
 # Evaluation
  
 ## Energy Consumption
-The energy consumption is one of the main constraints of the system in terms of evaluation. This system is powered by 3 batteries with a total amount of 3750mAh. Alternatives of this solution could be using solar energy or rechargeable batteries. However, the solar panels would be costly so it is not respecting the constraints we have on the terms of production cost. Also the rechargeable batteries cannot be used since the system is thought to be used also in gardens where it will not be possible to charge it continuously.
- 
+Energy consumption is one of the main constraints of the system in terms of evaluation. This system is powered by 3 batteries with a total amount of 3750mAh. Alternatives of this solution could be using solar energy or rechargeable batteries. However, the solar panels would be costly so it is not respecting the constraints we have on the terms of production cost. Also, the rechargeable batteries cannot be used since the system is thought to be used also in gardens where it will not be possible to charge it continuously.
+
 We will activate the components:
- 
+
 •Display: The value will be updated after every measurement and it will remain active on some small intervals of time. More precisely it will be activated for 1 second every 1 minute.
- 
+
 •Relay: Tt will be activated only when irrigation is needed. The assumption we make is that the relay will be active only for 10 seconds per day since we do on average 2 irrigation per day with 5 seconds each.
- 
-•Sensors: Dht22 sensor will read the temperature values with a sampling period of 2 hours. On the other hand the Seesaw soil moisture sensor will have a variable sampling period (6/12 hours).
+
+•Sensors: Dht22 sensor will read the temperature values with a sampling period of 2 hours. On the other hand, the Seesaw soil moisture sensor will have a variable sampling period (6/12 hours).
  
  
 ## Analysis on sampling frequency (Battery lifetime)
-Here we will represents the power consumption the components need when they are on active mode:
+Here we will represent the power consumption the components need when they are on active mode:
 dht22 = 1,5 mA
 seesaw adafruit = 5 mA
 relay = 135 mA
@@ -32,7 +32,7 @@ ILI9341 | 30 | 100%
 relay | 135 | ~ 0.001% 
 
 Total: 1,5* 1 + 5* 1 + 30* 1 + 135* 0.000001 ≈ 36,5 mA.
-With the battery of 3750 mA our system would last: 3750 mAh / 36,5mA = 103 hours ( something more than 4 days). This a very bad result since it doesn't satisfy the requirement to last at least one year. However it will not be necessary to continuously sample since the variation of the air temperature and soil moisture is not very high.
+With the battery of 3750 mA, our system would last: 3750 mAh / 36,5mA = 103 hours ( something more than 4 days). This is a very bad result since it doesn't satisfy the requirement to last at least one year. However, it will not be necessary to continuously sample since the variation of the air temperature and soil moisture is not very high.
  
 ###### second approach
 One second approach is that we sample with the dht22 sensor 1 time every 2 hours and with the humidity sensor once in 6 hours with 2 seconds active for every time we mwasyre. The relay is activated as we said before only 2 times in a day for 5 seconds eaach time and the display is always active.
