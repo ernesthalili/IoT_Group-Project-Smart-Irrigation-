@@ -2,6 +2,9 @@
 
 ## Smart Irrigation System
 In the system, we will have 2 types of computations. Locally we will have a logic to decide when we want to activate the relay (it will be connected to a water pump) using the values received by sensors. In the Cloud, we want to add the possibility to show historical data or to perform analyses of statistics. 
+
+<img width="500" alt="image" src="images/architecture.png">
+
 The user can monitor the system state and can visualize the statistics provided from the cloud. Every time there will be shown the most recent sent values of the air temperature and soil moisture level of the ground around the palace where the plants are located.
 
 
