@@ -64,6 +64,9 @@ u8x8_riotos_t user_data =
     .pin_reset = TEST_PIN_RESET,
 };
 
+// LoRa
+extern semtech_loramac_t loramac;
+
 
 void read_temperature_humidity(){ //dht22 sensor
     int16_t temp, hum;
@@ -92,7 +95,9 @@ void read_temperature_humidity(){ //dht22 sensor
 
     // todo send messages to LoraWan
 
-    // todo display the read values
+
+
+    // todo display the read values /// DONE
         
     printf("DHT values - temp: %s°C - relative humidity: %s%%\n",temp_s, hum_s);
 }
@@ -147,18 +152,43 @@ void write_display(char* message){ //Display
 }
 
 
-/*int configuration_lw(){
+int loramac_init(char* deui, char* aeui, char* akey){
+    uint8_t deveui[LORAMAC_DEVEUI_LEN];
+    uint8_t appeui[LORAMAC_APPEUI_LEN];
+    uint8_t appkey[LORAMAC_APPKEY_LEN];
 
+    fmt_hex_bytes(deveui, deui);
+    fmt_hex_bytes(appeui, aeui);
+    fmt_hex_bytes(appkey, akey);
+
+
+    semtech_loramac_set_deveui(&loramac, deveui);
+    semtech_loramac_set_appeui(&loramac, appeui);
+    semtech_loramac_set_appkey(&loramac, appkey);
+    semtech_loramac_set_dr(&loramac, LORAMAC_DR_5);
+
+    if (semtech_loramac_join(&loramac, LORAMAC_JOIN_OTAA) != SEMTECH_LORAMAC_JOIN_SUCCEEDED) {
+        printf("Join procedure failed\n");
+        return 1;
+    }
 
     return 0;
-}*/
+}
 
 
-/*int send_message(char* message){
+int send_message(char* message){
+    uint8_t config_cnf = CONFIG_LORAMAC_DEFAULT_TX_MODE;
+    uint8_t config_port = CONFIG_LORAMAC_DEFAULT_TX_PORT;
 
+    semtech_loramac_set_tx_mode(&loramac, config_cnf);
+    semtech_loramac_set_tx_port(&loramac, config_port);
+
+    if( semtech_loramac_send(&loramac,(uint8_t *)message, strlen(message)) != SEMTECH_LORAMAC_TX_DONE ){
+        printf("Cannot send message %s\n", message);
+    }
 
     return 0;
-}*/
+}
 
 void init_components(){ //initialize all components
 //dht22 sensor inizialization
@@ -189,6 +219,14 @@ void init_components(){ //initialize all components
     u8g2_SetI2CAddress(&u8g2, TEST_ADDR);
     u8g2_InitDisplay(&u8g2);
     u8g2_SetPowerSave(&u8g2, 0);
+
+    char* de = DEVEUI;
+    char* ae = APPEUI;
+    char* ak = APPKEY;
+    
+    if (loramac_init(de, ae, ak) == 1){
+        printf("Failed to init the LoRa\n");
+    }
 
 }
 
