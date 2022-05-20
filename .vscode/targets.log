@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri May 20 11:10:46 2022
+# Make data base, printed on Fri May 20 12:27:01 2022
 
 # Variables
 
@@ -297,7 +297,6 @@ LANG = C
 # environment
 VSCODE_PID = 3754
 # variable set hash-table stats:
- 
 # Load=142/1024=14%, Rehash=0, Collisions=24/164=15%
 
 # Pattern-specific Variable Values
@@ -328,7 +327,6 @@ Makefile:
 #  Implicit rule search has been done.
 #  File does not exist.
 #  File has been updated.
- 
 #  Failed to be updated.
 
 # Not a target:
@@ -357,6 +355,7 @@ GNUmakefile:
 
 # No 'vpath' search paths.
 
+ 
 # No general ('VPATH' variable) search path.
 
 # strcache buffers: 1 (0) / strings = 17 / storage = 170 B / avg = 10 B
@@ -365,6 +364,6 @@ GNUmakefile:
 # strcache performance: lookups = 20 / hit rate = 15%
 # hash-table stats:
 # Load=17/8192=0%, Rehash=0, Collisions=1/20=5%
-# Finished Make data base on Fri May 20 11:10:46 2022
+# Finished Make data base on Fri May 20 12:27:01 2022
 
  
