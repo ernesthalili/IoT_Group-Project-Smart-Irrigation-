@@ -5,7 +5,7 @@ APPLICATION = smart_irrigation
 BOARD ?= b-l072z-lrwan1
 
 # This has to be the absolute path to the RIOT base directory:
-RIOTBASE ?= $(CURDIR)/../..
+RIOTBASE ?= $(CURDIR)/../../../RIOT
 
 DEVEUI ?= 70B3D57ED004F423
 APPEUI ?= 0000000000000000
@@ -50,14 +50,6 @@ DEVELHELP ?= 1
 
 # Change this to 0 show compiler invocation lines by default:
 QUIET ?= 1
-
-# Default IotLab Config to run the test
-#ifneq (,$(filter iotlab%,$(MAKECMDGOALS)))
-  #IOTLAB_NODES ?= 1
-  #IOTLAB_TYPE  ?= st-lrwan1:sx1276
-  #IOTLAB_SITE  ?= saclay
-  #include $(RIOTBASE)/dist/testbed-support/Makefile.iotlab
-#endif
 
 ifneq (,$(filter test,$(MAKECMDGOALS)))
   DEFAULT_MODULE += test_utils_interactive_sync

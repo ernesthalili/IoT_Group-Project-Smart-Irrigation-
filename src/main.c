@@ -31,14 +31,8 @@
 #include "ztimer.h"
 
 
-//#include "main.h"
-
-
 #if IS_USED(MODULE_PERIPH_RTC)
 #include "periph/rtc.h"
-#else
-#include "timex.h"
-#include "ztimer.h"
 #endif
 
 #include "net/loramac.h"
@@ -56,6 +50,7 @@
 #include "sx126x_params.h"
 #endif
 
+
 #define THRESHOLD_TEMPERATURE 25  // CELCIUS DEGREE
 #define THRESHOLD_HUMIDITY 30  // IN PERCENTAGE 
 #define IRRIGATION_TIME 5 // TIME IN SECONDS
@@ -65,29 +60,35 @@
 // ! VARIABLE PERIOD
 int soil_period = 6;  // 6 HOURS = 21 600 SECONDS  
 
-/* Messages are sent every 20s to respect the duty cycle on each channel */
-#define PERIOD_S            (20U)
+// to check if there are sending messages and which is they status
+u_int8_t sending_messages = SEMTECH_LORAMAC_TX_DONE;
 
-#define SENDER_PRIO         (THREAD_PRIORITY_MAIN - 1)
-static kernel_pid_t sender_pid;
-static char sender_stack[THREAD_STACKSIZE_MAIN / 2];
+// LoRa
+static semtech_loramac_t loramac;
+#if IS_USED(MODULE_SX127X)
+static sx127x_t sx127x;
+#endif
+#if IS_USED(MODULE_SX126X)
+static sx126x_t sx126x;
+#endif
+#if !IS_USED(MODULE_PERIPH_RTC)
+static ztimer_t timer;
+#endif
 
-
-void read_temperature_humidity(void);
+void* read_temperature_humidity(void* arg);
+void* read_soil(void* arg);
 void irrigate(void);
-void read_soil(void);
 void write_display(char* message);
 int init_components(void);
 
 // function for LoRaWAN
-int loramac_init(void);
-int send_message(char* message);
+static int loramac_init(void);
+static void send_message(char* message);
 
 
 //Definition of Array used as Stack by threads
-//static char stack[THREAD_STACKSIZE_DEFAULT];
-//static char temperature_stack[THREAD_STACKSIZE_DEFAULT];
-//static char soil_stack[THREAD_STACKSIZE_DEFAULT];
+static char temperature_stack[THREAD_STACKSIZE_DEFAULT];
+static char soil_stack[THREAD_STACKSIZE_DEFAULT];
 
 //dht22 sensor
 //dht_t dev;
@@ -104,9 +105,7 @@ int send_message(char* message);
 //relay water pump
 //gpio_t pin_relay = GPIO_PIN(PORT_B, 13); //D13
 
-
-//display pin SDA D14 and SCK D15
-#define TEST_OUTPUT_I2C 4
+//display
 //u8g2_t u8g2;
 /*u8x8_riotos_t user_data =
 {
@@ -116,82 +115,12 @@ int send_message(char* message);
     .pin_reset = TEST_PIN_RESET,
 };*/
 
-// LoRa
-static semtech_loramac_t loramac;
-#if IS_USED(MODULE_SX127X)
-static sx127x_t sx127x;
-#endif
-#if IS_USED(MODULE_SX126X)
-static sx126x_t sx126x;
-#endif
-#if !IS_USED(MODULE_PERIPH_RTC)
-static ztimer_t timer;
-#endif
-
-static const char* message = "This is Smart Irrigation";
-
 static uint8_t deveui[LORAMAC_DEVEUI_LEN];
 static uint8_t appeui[LORAMAC_APPEUI_LEN];
 static uint8_t appkey[LORAMAC_APPKEY_LEN];
 
-static void _alarm_cb(void *arg)
-{
-    (void) arg;
-    msg_t msg;
-    msg_send(&msg, sender_pid);
-}
-
-static void _prepare_next_alarm(void)
-{
-#if IS_USED(MODULE_PERIPH_RTC)
-    struct tm time;
-    rtc_get_time(&time);
-    /* set initial alarm */
-    time.tm_sec += PERIOD_S;
-    mktime(&time);
-    rtc_set_alarm(&time, _alarm_cb, NULL);
-#else
-    timer.callback = _alarm_cb;
-    ztimer_set(ZTIMER_MSEC, &timer, PERIOD_S * MS_PER_SEC);
-#endif
-}
-
-static void _send_message(void)
-{
-    printf("Sending: %s\n", message);
-    /* Try to send the message */
-    uint8_t ret = semtech_loramac_send(&loramac,
-                                       (uint8_t *)message, strlen(message));
-    if (ret != SEMTECH_LORAMAC_TX_DONE)  {
-        printf("Cannot send message '%s', ret code: %d\n", message, ret);
-        return;
-    }
-}
-
-static void *sender(void *arg)
-{
+void* read_temperature_humidity(void* arg){ //dht22 sensor
     (void)arg;
-
-    msg_t msg;
-    msg_t msg_queue[8];
-    msg_init_queue(msg_queue, 8);
-
-    while (1) {
-        msg_receive(&msg);
-
-        /* Trigger the message send */
-        _send_message();
-
-        /* Schedule the next wake-up alarm */
-        _prepare_next_alarm();
-    }
-
-    /* this should never be reached */
-    return NULL;
-}
-
-
-void read_temperature_humidity(void){ //dht22 sensor
     /*int16_t temp, hum;
 
     if (dht_read(&dev, &temp, &hum) != DHT_OK) {
@@ -221,19 +150,15 @@ void read_temperature_humidity(void){ //dht22 sensor
     printf("DHT values - temp: %s°C - relative humidity: %s%%\n",temp_s, hum_s);
     
  */
+    char *message = "soil";
+    send_message(message);
+
+
+    return NULL;
 }
 
-void irrigate(void){ //relay water pump
-   /* printf("Turn-off water pump\n");
-    gpio_clear(pin_relay);
-    xtimer_sleep(IRRIGATION_TIME);
-    printf("Turn-off water pump\n");
-    gpio_set(pin_relay);*/
-
-}
-
-
-void read_soil(void){ //soil sensor
+void* read_soil(void* arg){ //soil sensor
+    (void)arg;
     /*size_t len;
     int16_t temp;
     uint16_t moist;
@@ -256,6 +181,20 @@ void read_soil(void){ //soil sensor
 
     printf("Reading: T: %s °C  Moist: %s\n", tstr, mstr);
     xtimer_sleep(5);*/
+
+    char *message = "temp";
+    send_message(message);
+
+    return NULL;
+}
+
+void irrigate(void){ //relay water pump
+   /* printf("Turn-off water pump\n");
+    gpio_clear(pin_relay);
+    xtimer_sleep(IRRIGATION_TIME);
+    printf("Turn-off water pump\n");
+    gpio_set(pin_relay);*/
+
 }
 
 
@@ -274,24 +213,69 @@ void write_display(char* message){ //Display
 }
 
 
-int loramac_init(void){
+static int loramac_init(void){
     
+    puts("LoRaWAN Class A low-power application");
+    puts("=====================================");
+
+    /* Convert identifiers and application key */
+    fmt_hex_bytes(deveui, CONFIG_LORAMAC_DEV_EUI_DEFAULT);
+    fmt_hex_bytes(appeui, CONFIG_LORAMAC_APP_EUI_DEFAULT);
+    fmt_hex_bytes(appkey, CONFIG_LORAMAC_APP_KEY_DEFAULT);
+
+    /* Initialize the radio driver */
+#if IS_USED(MODULE_SX127X)
+    sx127x_setup(&sx127x, &sx127x_params[0], 0);
+    loramac.netdev = &sx127x.netdev;
+    loramac.netdev->driver = &sx127x_driver;
+#endif
+
+#if IS_USED(MODULE_SX126X)
+    sx126x_setup(&sx126x, &sx126x_params[0], 0);
+    loramac.netdev = &sx126x.netdev;
+    loramac.netdev->driver = &sx126x_driver;
+#endif
+
+    /* Initialize the loramac stack */
+    semtech_loramac_init(&loramac);
+    semtech_loramac_set_deveui(&loramac, deveui);
+    semtech_loramac_set_appeui(&loramac, appeui);
+    semtech_loramac_set_appkey(&loramac, appkey);
+
+
+    /* Use a fast datarate, e.g. BW125/SF7 in EU868 */
+    semtech_loramac_set_dr(&loramac, LORAMAC_DR_5);
+
+    /* Start the Over-The-Air Activation (OTAA) procedure to retrieve the
+     * generated device address and to get the network and application session
+     * keys.
+     */
+    puts("Starting join procedure");
+    if (semtech_loramac_join(&loramac, LORAMAC_JOIN_OTAA) != SEMTECH_LORAMAC_JOIN_SUCCEEDED) {
+        puts("Join procedure failed");
+        return 1;
+    }
+    puts("Join procedure succeeded");
+
     return 0;
 }
 
 
-int send_message(char* message){
-    uint8_t config_cnf = CONFIG_LORAMAC_DEFAULT_TX_MODE;
-    uint8_t config_port = CONFIG_LORAMAC_DEFAULT_TX_PORT;
+static void send_message(char* message){
+    while(1){
 
-    semtech_loramac_set_tx_mode(&loramac, config_cnf);
-    semtech_loramac_set_tx_port(&loramac, config_port);
-
-    if( semtech_loramac_send(&loramac,(uint8_t *)message, strlen(message)) != SEMTECH_LORAMAC_TX_DONE ){
-        printf("Cannot send message %s\n", message);
+        if(sending_messages == SEMTECH_LORAMAC_TX_DONE){
+            sending_messages = 0;
+            printf("Sending: %s\n", message);
+            sending_messages = semtech_loramac_send(&loramac,(uint8_t *)message, strlen(message)); 
+            if (sending_messages != SEMTECH_LORAMAC_TX_DONE)  {
+                printf("Cannot send message '%s', ret code: %d\n", message, sending_messages);
+                return;
+            }
+            break;
+        }
+        xtimer_sleep(5);
     }
-
-    return 0;
 }
 
 int init_components(void){ //initialize all components
@@ -336,60 +320,21 @@ int init_components(void){ //initialize all components
 
 int main(void){
     
-    puts("Starting Up\n");
-    puts("LoRaWAN Class A low-power application");
+    puts("Smart Irrigation System");
     puts("=====================================");
-
-    // components init
-    
-    /*if(init_components() == 1){
+    if(init_components() == 1){
         printf("Failed to Initialize Components\n");
         return 1;
-    }*/
-    /* Convert identifiers and application key */
-    fmt_hex_bytes(deveui, CONFIG_LORAMAC_DEV_EUI_DEFAULT);
-    fmt_hex_bytes(appeui, CONFIG_LORAMAC_APP_EUI_DEFAULT);
-    fmt_hex_bytes(appkey, CONFIG_LORAMAC_APP_KEY_DEFAULT);
-
-    /* Initialize the radio driver */
-    #if IS_USED(MODULE_SX127X)
-        sx127x_setup(&sx127x, &sx127x_params[0], 0);
-        loramac.netdev = &sx127x.netdev;
-        loramac.netdev->driver = &sx127x_driver;
-    #endif
-
-    #if IS_USED(MODULE_SX126X)
-        sx126x_setup(&sx126x, &sx126x_params[0], 0);
-        loramac.netdev = &sx126x.netdev;
-        loramac.netdev->driver = &sx126x_driver;
-    #endif
-
-    semtech_loramac_init(&loramac);
-    semtech_loramac_set_deveui(&loramac, deveui);
-    semtech_loramac_set_appeui(&loramac, appeui);
-    semtech_loramac_set_appkey(&loramac, appkey);
-    semtech_loramac_set_dr(&loramac, LORAMAC_DR_5);
-
-    puts("Starting join procedure");
-    if (semtech_loramac_join(&loramac, LORAMAC_JOIN_OTAA) != SEMTECH_LORAMAC_JOIN_SUCCEEDED) {
-        puts("Join procedure failed");
-        return 1;
     }
-    puts("Join procedure succeeded");
+
     //Starting Thread that handles temperature and humidity measurement
-    //thread_create(temperature_stack,sizeof(temperature_stack),THREAD_PRIORITY_MAIN - 1, 0,read_temperature_humidity, NULL, "temp_sensor_logic");
-    //puts("Temperature Thread Started");
+    thread_create(temperature_stack,sizeof(temperature_stack),THREAD_PRIORITY_MAIN -1, 0,read_temperature_humidity, NULL, "temp_sensor_logic");
+    puts("Temperature Thread Started");
 
     //Starting Thread that handles soil moisture measurement
-    //thread_create(soil_stack,sizeof(soil_stack),THREAD_PRIORITY_MAIN -1, 0,read_soil, NULL, "soil_sensor_logic");
-    //puts("Soil Thread Started");
-    /* start the sender thread */
-    sender_pid = thread_create(sender_stack, sizeof(sender_stack),
-                               SENDER_PRIO, 0, sender, NULL, "sender");
+    thread_create(soil_stack,sizeof(soil_stack),THREAD_PRIORITY_MAIN -1, 0,read_soil, NULL, "soil_sensor_logic");
+    puts("Soil Thread Started");
 
-    /* trigger the first send */
-    msg_t msg;
-    msg_send(&msg, sender_pid);
     
     return 0;
 }

@@ -108,7 +108,6 @@
  /home/e_r_n_e_s_t/Documents/magistrale/Engineering_in_Computer_Science/first_year/second_semester/Internet_of_things/RIOT/boards/common/stm32/include/cfg_timer_tim2.h \
  /home/e_r_n_e_s_t/Documents/magistrale/Engineering_in_Computer_Science/first_year/second_semester/Internet_of_things/RIOT/drivers/include/periph/spi.h \
  /home/e_r_n_e_s_t/Documents/magistrale/Engineering_in_Computer_Science/first_year/second_semester/Internet_of_things/RIOT/drivers/include/periph/gpio.h \
- /home/e_r_n_e_s_t/Documents/magistrale/Engineering_in_Computer_Science/first_year/second_semester/Internet_of_things/RIOT/drivers/include/periph/eeprom.h \
  /home/e_r_n_e_s_t/Documents/magistrale/Engineering_in_Computer_Science/first_year/second_semester/Internet_of_things/RIOT/core/include/debug.h
 
 /home/e_r_n_e_s_t/Documents/magistrale/Engineering_in_Computer_Science/first_year/second_semester/Internet_of_things/project_github/IoT_Group-Project/src/bin/b-l072z-lrwan1/riotbuild/riotbuild.h:
@@ -348,7 +347,5 @@
 /home/e_r_n_e_s_t/Documents/magistrale/Engineering_in_Computer_Science/first_year/second_semester/Internet_of_things/RIOT/drivers/include/periph/spi.h:
 
 /home/e_r_n_e_s_t/Documents/magistrale/Engineering_in_Computer_Science/first_year/second_semester/Internet_of_things/RIOT/drivers/include/periph/gpio.h:
-
-/home/e_r_n_e_s_t/Documents/magistrale/Engineering_in_Computer_Science/first_year/second_semester/Internet_of_things/RIOT/drivers/include/periph/eeprom.h:
 
 /home/e_r_n_e_s_t/Documents/magistrale/Engineering_in_Computer_Science/first_year/second_semester/Internet_of_things/RIOT/core/include/debug.h:
