@@ -14,6 +14,7 @@ int send_message(char* message);
 
 
 
-
-
+// function for LoRaWAN
+int loramac_init(char* deui, char* aeui, char* akey);
+int send_message(char* message);
 
