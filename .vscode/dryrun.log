@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/e_r_n_e_s_t/Documents/magistrale/Engineering_in_Computer_Science/first_year/second_semester/Internet_of_things/project_github/IoT_Group-Project'
+make: Leaving directory '/home/e_r_n_e_s_t/Documents/magistrale/Engineering_in_Computer_Science/first_year/second_semester/Internet_of_things/project_github/IoT_Group-Project'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+

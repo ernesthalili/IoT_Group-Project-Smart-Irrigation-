@@ -1,56 +1,73 @@
+# name of your application
 APPLICATION = smart_irrigation
 
+# Use the ST B-L072Z-LRWAN1 board by default:
 BOARD ?= b-l072z-lrwan1
 
+# This has to be the absolute path to the RIOT base directory:
 RIOTBASE ?= $(CURDIR)/../..
 
+DEVEUI ?= 70B3D57ED004F423
+APPEUI ?= 0000000000000000
+APPKEY ?= DA0505325F078BE0C3CC6B8C4CA7B7D9
 
-LORA_DRIVER ?= sx1276
+# Pass these enviroment variables to docker
+DOCKER_ENV_VARS += DEVEUI
+DOCKER_ENV_VARS += APPEUI
+DOCKER_ENV_VARS += APPKEY
+
+# Default radio driver is Semtech SX1276 (used by the B-L072Z-LRWAN1 board)
+DRIVER ?= sx1276
+
+# Default region is Europe and default band is 868MHz
 LORA_REGION ?= EU868
-USEPKG += semtech-loramac
-USEMODULE += $(LORA_DRIVER)
-USEMODULE += semtech_loramac_rx
-USEMODULE += auto_init_loramac
 
-USEMODULE += shell
-USEMODULE += shell_commands
+# Include the Semtech-loramac package
+USEPKG += semtech-loramac
+
+USEMODULE += $(DRIVER)
 USEMODULE += fmt
+FEATURES_OPTIONAL += periph_rtc
+
+
+# Sensors packages to use
+USEMODULE += seesaw_soil
+USEMODULE += dht
+USEPKG += ucglib
 
 USEMODULE += periph_gpio
+USEMODULE += periph_spi
 USEMODULE += xtimer
-USEMODULE += periph_gpio_irq
 
-FEATURES_OPTIONAL += periph_eeprom
-FEATURES_REQUIRED = periph_gpio
-
-
-USEMODULE += ztimer
-USEMODULE += ztimer_usec
 USEPKG += u8g2
 
-TEST_OUTPUT ?= 4
+FEATURES_REQUIRED += periph_gpio
 
-TEST_I2C ?= 0
-TEST_SPI ?= 0
-TEST_ADDR ?= 0x3c
-TEST_PIN_CS ?= GPIO_UNDEF
-TEST_PIN_DC ?= GPIO_UNDEF
-TEST_PIN_RESET ?= GPIO_UNDEF
+# Comment this out to disable code in RIOT that does safety checking
+# which is not needed in a production environment but helps in the
+# development process:
+DEVELHELP ?= 1
 
-TEST_DISPLAY ?= u8g2_Setup_sh1106_i2c_128x64_noname_2
+# Change this to 0 show compiler invocation lines by default:
+QUIET ?= 1
 
-USEMODULE += periph_i2c
-FEATURES_REQUIRED += periph_gpio periph_i2c
+# Default IotLab Config to run the test
+#ifneq (,$(filter iotlab%,$(MAKECMDGOALS)))
+  #IOTLAB_NODES ?= 1
+  #IOTLAB_TYPE  ?= st-lrwan1:sx1276
+  #IOTLAB_SITE  ?= saclay
+  #include $(RIOTBASE)/dist/testbed-support/Makefile.iotlab
+#endif
 
-CFLAGS += -DTEST_OUTPUT=$(TEST_OUTPUT)
-CFLAGS += -DTEST_SPI=$(TEST_SPI)
-CFLAGS += -DTEST_I2C=$(TEST_I2C)
-CFLAGS += -DTEST_ADDR=$(TEST_ADDR)
-CFLAGS += -DTEST_PIN_CS=$(TEST_PIN_CS)
-CFLAGS += -DTEST_PIN_DC=$(TEST_PIN_DC)
-CFLAGS += -DTEST_PIN_RESET=$(TEST_PIN_RESET)
-CFLAGS += -DTEST_DISPLAY=$(TEST_DISPLAY)
-
-
+ifneq (,$(filter test,$(MAKECMDGOALS)))
+  DEFAULT_MODULE += test_utils_interactive_sync
+endif
 
 include $(RIOTBASE)/Makefile.include
+
+ifndef CONFIG_KCONFIG_USEMODULE_LORAWAN
+  # OTAA compile time configuration keys
+  CFLAGS += -DCONFIG_LORAMAC_APP_KEY_DEFAULT=\"$(APPKEY)\"
+  CFLAGS += -DCONFIG_LORAMAC_APP_EUI_DEFAULT=\"$(APPEUI)\"
+  CFLAGS += -DCONFIG_LORAMAC_DEV_EUI_DEFAULT=\"$(DEVEUI)\"
+endif

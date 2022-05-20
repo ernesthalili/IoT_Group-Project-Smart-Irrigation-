@@ -1,15 +1,18 @@
 #ifndef MAIN_FUNCTIONS
 #define MAIN_FUNCTIONS
+#endif
 
-
-
-void read_temperature_humidity();
-void irrigate();
-void read_soil();
+void read_temperature_humidity(void);
+void irrigate(void);
+void read_soil(void);
 void write_display(char* message);
-int configuration_lw();
+int init_components(void);
+
+// function for LoRaWAN
+int loramac_init(void);
 int send_message(char* message);
-void init_components();
+
+
 
 
 
