@@ -14,5 +14,4 @@ int init_components(void);
 static int loramac_init(void);
 static void send_message(char* message);
 
-//sprintf(json,"{\"temperature\": \"%f\", \"location\": \"%s\",\"unixTime\": \"%s\"}",temperature,location,strCurrTime);
 

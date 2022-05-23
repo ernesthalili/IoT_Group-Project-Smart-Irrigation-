@@ -54,12 +54,19 @@
 #endif
 
 // sleeping time for the components
-int dht_sleeping_time = 5;
-int seesaw_sleeping_time = 5;
-int display_sleeping_time = 6;
-int pump_irrigation_time =3;
+int dht_sleeping_time = 20;  // 2 hours = 2*60*60 = 7 200 seconds 
+int seesaw_sleeping_time = 20; // 6 hours  = 6*60*60 = 21 600 seconds
+int display_sleeping_time = 10; // 1 minute = 60 seconds
+int pump_irrigation_time = 1; // 1 second (activated by an event)
 
+// danger level for soil moisture
+int soil_danger_level = 600;
+
+// flag to guarantee the Mutual Exclusion on sending messages
 u_int8_t sending_messages = SEMTECH_LORAMAC_TX_DONE;
+
+// flag to avoid writing on display while irrigating
+bool irrigating = false;
 
 static semtech_loramac_t loramac;
 #if IS_USED(MODULE_SX127X)
@@ -91,7 +98,7 @@ static ucg_riotos_t user_data =
 {
     .device_index = SPI_DEV(0),
     .pin_cs = GPIO_PIN(PORT_B, 6),
-    .pin_cd = GPIO_PIN(PORT_B, 12),  // C 7
+    .pin_cd = GPIO_PIN(PORT_B, 12),  
     .pin_reset = GPIO_PIN(PORT_A, 9),
 };
 
@@ -101,13 +108,13 @@ static uint8_t appkey[LORAMAC_APPKEY_LEN];
 
 void* read_temperature_humidity(void* arg){ //dht22 sensor
     (void) arg;
-    /*int16_t temp, hum;
-    char temp_s[10];
+    int16_t temp, hum;
+    char temp_s[10]="25";  // value created for testing purposes
     char hum_s[10];
 
-    while(1){
+    while(1){/*
         if(dht_read(&dht_device, &temp, &hum) != DHT_OK){
-            //printf("Error reading values\n");
+            printf("Error reading temperature values\n");
             continue;
         }
         else{
@@ -121,46 +128,75 @@ void* read_temperature_humidity(void* arg){ //dht22 sensor
             printf("DHT values - temp: %s°C - relative humidity: %s\n",temp_s, hum_s);
         }
 
-        //if(temp > goal_temp*1.1)change_relay_state(RELAY_OFF);
-        //else if(temp <= goal_temp*0.9)change_relay_state(RELAY_ON);
-
+        if(temp > temperature_danger_level )  {
+            seesaw_sleeping_time = 21;
+        }
+        else {
+            seesaw_sleeping_time = 42;
+        }
+    
+        // change values for display
         env_temp_display = temp;
         env_hum_display  = hum;
-        char* message;
-        sprintf(message, "{\"type\": \"%s\", \"value\": \"%s\",)","1", "25" ); // to test
-        printf("%s",message);
+*/
+        
+        char final[] = "T";
+        strcat(final,temp_s);
+        char* message = final;
+        
+        //printf("sending: %s\n",message);
+
         send_message(message);
         xtimer_sleep(dht_sleeping_time); //sleeping
-    }*/
+    
+    }
+
 
     return NULL;
 }
 
 void* read_soil(void* arg){ //soil sensor
     (void)arg;
-    /*uint16_t moist;
+    uint16_t moist=100 ;
     uint16_t temp;
-    while (1)
-    {
+
+    while (1){/*
         if(seesaw_soil_moisture(&seesaw_device, &moist) == SEESAW_SOIL_BUSERR || seesaw_soil_moisture(&seesaw_device, &temp) == SEESAW_SOIL_BUSERR){
             printf("Error on reading the soil sensor\n");
             continue;
         }
-        int humidity_danger_level = 600;
+        else {
+            printf("moist: %d\n", moist);
+        }
+        
 
         // check whether to irrigate 
-        //if (moist < humidity_danger_level ){irrigation_function(pump_irrigation_time);}
-        //irrigation_function(1);
+        if (moist < soil_danger_level ){
+            irrigate(pump_irrigation_time);
+        }
 
+        // change values for display
         soil_hum_display = moist;
         soil_temp_display = temp;
+*/
 
-        printf("moist: %d\n", moist);
-    
-        //send_message("soil");
+        //  code for testing with created values
+        moist++;
+        char info[5];
+        sprintf(info, "%d", moist);
+        //----------------------------
+
+
+        char final[] = "S";
+        strcat(final,info);
+        char* message = final;
+
+        //printf("sending: %s\n",message);
+
+        send_message(message);
         xtimer_sleep(seesaw_sleeping_time); //sleeping time
     }
-*/
+
     return NULL;
 }
 
@@ -168,6 +204,11 @@ void *display_logic(void *arg){
     (void)arg;
     /*
     while(1){
+        // add a control to avoid the display writing values while irrigating
+        if(irrigating) {
+            xtimer_sleep(pump_irrigation_time); // sleep for the time we are irrigating
+            continue;
+        }
         //print on display 
         ucg_ClearScreen(&ucg);
         for (int y = 0; y < 48; y++) {
@@ -219,31 +260,44 @@ void *display_logic(void *arg){
     
         
         xtimer_sleep(display_sleeping_time); //sleeping time
-    
     }
 */
-    //irrigate(pump_irrigation_time);
     return NULL;
 }
 
 void irrigate(int irrigate){ //relay water pump
+    /*irrigating = true;
     gpio_clear(pin_out);
     printf("Turn-on water pump\n");
+
     xtimer_sleep(irrigate);
+
     gpio_set(pin_out);
+    irrigating = false;
     printf("Turn-off water pump\n");
 
     printf("Irrigated for %d seconds\n",pump_irrigation_time);
+
+    char info[5];
+    sprintf(info, "%d", pump_irrigation_time);
+    char final[] = "I";
+    strcat(final,info);
+    char* message = final;
+    
+    send_message(message);*/
+    
 }
+
 
 
 static void send_message(char* message)
 {
+    
     while(1){
 
         if(sending_messages == SEMTECH_LORAMAC_TX_DONE){
             sending_messages = 0;
-            //printf("Sending: %s\n", message);
+            printf("Sending: %s\n", message);
             sending_messages = semtech_loramac_send(&loramac,(uint8_t *)message, strlen(message)); 
             if (sending_messages != SEMTECH_LORAMAC_TX_DONE)  {
                 printf("Cannot send message '%s', ret code: %d\n", message, sending_messages);
@@ -251,9 +305,9 @@ static void send_message(char* message)
             }
             break;
         }
-        xtimer_sleep(5);
+        xtimer_sleep(1);
     }
-
+    
 }
 
 
@@ -262,12 +316,12 @@ static int loramac_init(void){
     puts("LoRaWAN Class A low-power application");
     puts("=====================================");
 
-    /* Convert identifiers and application key */
+    // Convert identifiers and application key
     fmt_hex_bytes(deveui, CONFIG_LORAMAC_DEV_EUI_DEFAULT);
     fmt_hex_bytes(appeui, CONFIG_LORAMAC_APP_EUI_DEFAULT);
     fmt_hex_bytes(appkey, CONFIG_LORAMAC_APP_KEY_DEFAULT);
 
-    /* Initialize the radio driver */
+    // Initialize the radio driver 
 #if IS_USED(MODULE_SX127X)
     sx127x_setup(&sx127x, &sx127x_params[0], 0);
     loramac.netdev = &sx127x.netdev;
@@ -280,20 +334,19 @@ static int loramac_init(void){
     loramac.netdev->driver = &sx126x_driver;
 #endif
 
-    /* Initialize the loramac stack */
+    // Initialize the loramac stack 
     semtech_loramac_init(&loramac);
     semtech_loramac_set_deveui(&loramac, deveui);
     semtech_loramac_set_appeui(&loramac, appeui);
     semtech_loramac_set_appkey(&loramac, appkey);
 
 
-    /* Use a fast datarate, e.g. BW125/SF7 in EU868 */
+    // Use a fast datarate, e.g. BW125/SF7 in EU868 
     semtech_loramac_set_dr(&loramac, LORAMAC_DR_5);
 
-    /* Start the Over-The-Air Activation (OTAA) procedure to retrieve the
-     * generated device address and to get the network and application session
-     * keys.
-     */
+    // Start the Over-The-Air Activation (OTAA) procedure to retrieve the
+    // generated device address and to get the network and application session keys.
+     
     puts("Starting join procedure");
     if (semtech_loramac_join(&loramac, LORAMAC_JOIN_OTAA) != SEMTECH_LORAMAC_JOIN_SUCCEEDED) {
         puts("Join procedure failed");
@@ -302,28 +355,30 @@ static int loramac_init(void){
     puts("Join procedure succeeded");
 
     return 0;
+    
 }
 
 int init_components(void){ //initialize all components
 
+    /*
     // relay init
-    /*if (gpio_init(pin_out, GPIO_OUT)) {
+    if (gpio_init(pin_out, GPIO_OUT)) {
         printf("Error to initialize GPIO_PIN(%d %d)\n", PORT_B, 5);
         return -1;
     }
     puts("Relay's Pin Initialized\n");
-    gpio_set(pin_out);*/
+    gpio_set(pin_out);
 
     // display init
-    /*ucg_SetUserPtr(&ucg, &user_data);
+    ucg_SetUserPtr(&ucg, &user_data);
     ucg_Init(&ucg, ucg_dev_ili9341_18x240x320, ucg_ext_ili9341_18,ucg_com_hw_spi_riotos);
 
     ucg_SetRotate270(&ucg);
     ucg_SetFontMode(&ucg, UCG_FONT_MODE_SOLID);
-    ucg_SetFont(&ucg, ucg_font_helvR18_tf);*/
+    ucg_SetFont(&ucg, ucg_font_helvR18_tf);
 
     // Dht init
-    /*dht_params_t dht_params;
+    dht_params_t dht_params;
     dht_params.pin = GPIO_PIN(PORT_A,8);
     dht_params.in_mode = DHT_PARAM_PULL;
     if (dht_init(&dht_device, &dht_params) != DHT_OK){
@@ -331,21 +386,21 @@ int init_components(void){ //initialize all components
         return -1;
     }
     printf("DHT Sensor Initialized\n");
-*/
+
     // Seesaw init
-    /*if (seesaw_soil_init(&seesaw_device, &seesaw_soil_params[0]) != SEESAW_SOIL_OK){
+    if (seesaw_soil_init(&seesaw_device, &seesaw_soil_params[0]) != SEESAW_SOIL_OK){
         printf("Failed to initialize soil sensor\n");
         return -1;
     }
     printf("Soil Moisture Initialized\n");
 */
-
     if (loramac_init() == 1){
         printf("Failed to init the LoRa\n");
         return 1;
     }
     printf("LoRa initialized\n");
     return 0;
+    
 }
 
 int main(void)

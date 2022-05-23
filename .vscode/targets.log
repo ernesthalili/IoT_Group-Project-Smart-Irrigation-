@@ -1,6 +1,4 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'all'.  Stop.
-
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -8,7 +6,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri May 20 12:27:01 2022
+# Make data base, printed on Mon May 23 15:27:04 2022
 
 # Variables
 
@@ -51,7 +49,7 @@ SNAP_DATA = /var/snap/code/97
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:67263
+JOURNAL_STREAM = 8:66788
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -83,7 +81,7 @@ _ = /snap/code/97/usr/share/code/code
 # environment
 ROS_PACKAGE_PATH = /opt/ros/noetic/share
 # environment
-MANAGERPID = 2268
+MANAGERPID = 2217
 # environment
 ROS_PYTHON_VERSION = 3
 # environment
@@ -97,13 +95,13 @@ GSETTINGS_SCHEMA_DIR = /snap/code/97/usr/share/glib-2.0/schemas
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
-PATH = /home/e_r_n_e_s_t/.local/bin:/home/e_r_n_e_s_t/bin:/opt/ros/noetic/bin:/home/e_r_n_e_s_t/.local/bin:/home/e_r_n_e_s_t/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+PATH = /home/e_r_n_e_s_t/.amplify/bin:/home/e_r_n_e_s_t/.local/bin:/home/e_r_n_e_s_t/bin:/home/e_r_n_e_s_t/.amplify/bin:/opt/ros/noetic/bin:/home/e_r_n_e_s_t/.local/bin:/home/e_r_n_e_s_t/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 # environment
 XDG_SESSION_DESKTOP = ubuntu
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/u20-04:@/tmp/.ICE-unix/2479,unix/u20-04:/tmp/.ICE-unix/2479
+SESSION_MANAGER = local/u20-04:@/tmp/.ICE-unix/2477,unix/u20-04:/tmp/.ICE-unix/2477
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -123,7 +121,7 @@ DISABLE_WAYLAND = 1
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = e99e89316ded44428c2c94f598546bf7
+INVOCATION_ID = 5ec13520e14342af86b70168f93ad5a9
 # environment
 GDK_PIXBUF_MODULEDIR = /snap/code/97/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
 # default
@@ -137,7 +135,7 @@ ROS_DISTRO = noetic
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 3705
+GIO_LAUNCHED_DESKTOP_FILE_PID = 18718
 # automatic
 %F = $(notdir $%)
 # environment
@@ -151,7 +149,7 @@ PWD = /home/e_r_n_e_s_t/Documents/magistrale/Engineering_in_Computer_Science/fir
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 2442
+SSH_AGENT_PID = 2440
 # environment
 PKG_CONFIG_PATH = /opt/ros/noetic/lib/pkgconfig
 # environment
@@ -207,7 +205,7 @@ SHLVL = 0
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-82fc527a-f7e8-4612-a1b6-c7505da80b18.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-fd67a489-cadb-4811-a34b-4420f935c588.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -279,6 +277,9 @@ GJS_DEBUG_TOPICS = JS ERROR;JS LOG
 # default
 SUFFIXES := 
 # environment
+ 
+make: *** No rule to make target 'all'.  Stop.
+
 SNAP_REEXEC = 
 # environment
 CHROME_DESKTOP = code-url-handler.desktop
@@ -295,7 +296,7 @@ LC_ADDRESS = it_IT.UTF-8
 # environment
 LANG = C
 # environment
-VSCODE_PID = 3754
+VSCODE_PID = 18764
 # variable set hash-table stats:
 # Load=142/1024=14%, Rehash=0, Collisions=24/164=15%
 
@@ -355,7 +356,6 @@ GNUmakefile:
 
 # No 'vpath' search paths.
 
- 
 # No general ('VPATH' variable) search path.
 
 # strcache buffers: 1 (0) / strings = 17 / storage = 170 B / avg = 10 B
@@ -364,6 +364,6 @@ GNUmakefile:
 # strcache performance: lookups = 20 / hit rate = 15%
 # hash-table stats:
 # Load=17/8192=0%, Rehash=0, Collisions=1/20=5%
-# Finished Make data base on Fri May 20 12:27:01 2022
+# Finished Make data base on Mon May 23 15:27:04 2022
 
  
