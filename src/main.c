@@ -2,10 +2,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include <timex.h>
 
-#include "msg.h"
-#include "cpu.h"
-#include "board.h"
+#include "random.h"
 
 //Importing General Purpose Libraries
 #include "xtimer.h"
@@ -32,6 +31,7 @@
 #include "logo.h"
 
 #include "main.h"
+#include "msg.h"
 
 
 #if IS_USED(MODULE_PERIPH_RTC)
@@ -54,13 +54,14 @@
 #endif
 
 // sleeping time for the components
-int dht_sleeping_time = 20;  // 2 hours = 2*60*60 = 7 200 seconds 
+int dht_sleeping_time = 10;  // 2 hours = 2*60*60 = 7 200 seconds 
 int seesaw_sleeping_time = 20; // 6 hours  = 6*60*60 = 21 600 seconds
 int display_sleeping_time = 10; // 1 minute = 60 seconds
-int pump_irrigation_time = 1; // 1 second (activated by an event)
+int pump_irrigation_time = 2; // 2 second (activated by an event)
 
 // danger level for soil moisture
-int soil_danger_level = 600;
+int soil_danger_level = 900;
+int temperature_danger_level = 25;
 
 // flag to guarantee the Mutual Exclusion on sending messages
 u_int8_t sending_messages = SEMTECH_LORAMAC_TX_DONE;
@@ -109,15 +110,21 @@ static uint8_t appkey[LORAMAC_APPKEY_LEN];
 void* read_temperature_humidity(void* arg){ //dht22 sensor
     (void) arg;
     int16_t temp, hum;
-    char temp_s[10]="25";  // value created for testing purposes
+    char temp_s[10];  // value created for testing purposes
     char hum_s[10];
 
-    while(1){/*
+    while(1){
+        timex_t prima, dopo;
+        xtimer_now_timex(&prima);
+
         if(dht_read(&dht_device, &temp, &hum) != DHT_OK){
-            printf("Error reading temperature values\n");
+            //printf("Error reading temperature values\n");
             continue;
         }
         else{
+            xtimer_now_timex(&dopo);
+            printf("Read for: %d microseconds\n", dopo.microseconds-prima.microseconds);
+            temp = temp*3;
             size_t n = fmt_s16_dfp(temp_s, temp, -1);
             temp_s[n] = '\0';
 
@@ -129,40 +136,36 @@ void* read_temperature_humidity(void* arg){ //dht22 sensor
         }
 
         if(temp > temperature_danger_level )  {
-            seesaw_sleeping_time = 21;
+            seesaw_sleeping_time = 20;
         }
         else {
-            seesaw_sleeping_time = 42;
+            seesaw_sleeping_time = 40;
         }
     
         // change values for display
         env_temp_display = temp;
         env_hum_display  = hum;
-*/
+
         
         char final[] = "T";
         strcat(final,temp_s);
         char* message = final;
-        
-        //printf("sending: %s\n",message);
 
+        
         send_message(message);
         xtimer_sleep(dht_sleeping_time); //sleeping
-    
     }
-
-
     return NULL;
 }
 
 void* read_soil(void* arg){ //soil sensor
     (void)arg;
-    uint16_t moist=100 ;
+    uint16_t moist;
     uint16_t temp;
 
-    while (1){/*
+    while (1){
         if(seesaw_soil_moisture(&seesaw_device, &moist) == SEESAW_SOIL_BUSERR || seesaw_soil_moisture(&seesaw_device, &temp) == SEESAW_SOIL_BUSERR){
-            printf("Error on reading the soil sensor\n");
+            //printf("Error on reading the soil sensor\n");
             continue;
         }
         else {
@@ -178,31 +181,23 @@ void* read_soil(void* arg){ //soil sensor
         // change values for display
         soil_hum_display = moist;
         soil_temp_display = temp;
-*/
 
-        //  code for testing with created values
-        moist++;
         char info[5];
         sprintf(info, "%d", moist);
-        //----------------------------
-
 
         char final[] = "S";
         strcat(final,info);
         char* message = final;
 
-        //printf("sending: %s\n",message);
-
         send_message(message);
         xtimer_sleep(seesaw_sleeping_time); //sleeping time
     }
-
     return NULL;
 }
 
 void *display_logic(void *arg){
     (void)arg;
-    /*
+    
     while(1){
         // add a control to avoid the display writing values while irrigating
         if(irrigating) {
@@ -225,7 +220,7 @@ void *display_logic(void *arg){
 
         char temp_s[10];
         size_t n = fmt_s16_dfp(temp_s, env_temp_display, -1);
-            temp_s[n] = '\0';
+        temp_s[n] = '\0';
 
         char hum_s[10];
         size_t c = fmt_s16_dfp(hum_s, env_hum_display, -1);
@@ -258,15 +253,13 @@ void *display_logic(void *arg){
         strcat(message,mstr);
         ucg_DrawString(&ucg,8,180,0,message);
     
-        
         xtimer_sleep(display_sleeping_time); //sleeping time
     }
-*/
     return NULL;
 }
 
 void irrigate(int irrigate){ //relay water pump
-    /*irrigating = true;
+    irrigating = true;
     gpio_clear(pin_out);
     printf("Turn-on water pump\n");
 
@@ -276,45 +269,45 @@ void irrigate(int irrigate){ //relay water pump
     irrigating = false;
     printf("Turn-off water pump\n");
 
-    printf("Irrigated for %d seconds\n",pump_irrigation_time);
-
+    //printf("Irrigated for %d seconds\n",irrigate);  // controllo su terminale
+        
     char info[5];
-    sprintf(info, "%d", pump_irrigation_time);
+    sprintf(info, "%d", 30*irrigate);
     char final[] = "I";
     strcat(final,info);
     char* message = final;
     
-    send_message(message);*/
-    
+    send_message(message);   
 }
 
 
 
-static void send_message(char* message)
-{
-    
+static void send_message(char* message){
     while(1){
 
         if(sending_messages == SEMTECH_LORAMAC_TX_DONE){
             sending_messages = 0;
             printf("Sending: %s\n", message);
+
+            timex_t prima, dopo;
+            xtimer_now_timex(&prima);
             sending_messages = semtech_loramac_send(&loramac,(uint8_t *)message, strlen(message)); 
-            if (sending_messages != SEMTECH_LORAMAC_TX_DONE)  {
+            xtimer_now_timex(&dopo);
+            //printf("Sending message '%s'  for : %d microseconds\n",message, dopo.microseconds-prima.microseconds);
+
+            while(sending_messages != SEMTECH_LORAMAC_TX_DONE)  {
                 printf("Cannot send message '%s', ret code: %d\n", message, sending_messages);
-                return;
+                sending_messages = semtech_loramac_send(&loramac,(uint8_t *)message, strlen(message));
             }
+            printf("Message Sent: %s\n", message);
             break;
         }
         xtimer_sleep(1);
     }
-    
 }
 
 
 static int loramac_init(void){
-    
-    puts("LoRaWAN Class A low-power application");
-    puts("=====================================");
 
     // Convert identifiers and application key
     fmt_hex_bytes(deveui, CONFIG_LORAMAC_DEV_EUI_DEFAULT);
@@ -343,15 +336,18 @@ static int loramac_init(void){
 
     // Use a fast datarate, e.g. BW125/SF7 in EU868 
     semtech_loramac_set_dr(&loramac, LORAMAC_DR_5);
-
-    // Start the Over-The-Air Activation (OTAA) procedure to retrieve the
-    // generated device address and to get the network and application session keys.
      
     puts("Starting join procedure");
+
+    timex_t prima, dopo;
+    xtimer_now_timex(&prima);		
     if (semtech_loramac_join(&loramac, LORAMAC_JOIN_OTAA) != SEMTECH_LORAMAC_JOIN_SUCCEEDED) {
         puts("Join procedure failed");
         return 1;
     }
+    xtimer_now_timex(&dopo);
+    //printf("Join procedure : %d microseconds\n",dopo.microseconds-prima.microseconds);
+
     puts("Join procedure succeeded");
 
     return 0;
@@ -359,14 +355,12 @@ static int loramac_init(void){
 }
 
 int init_components(void){ //initialize all components
-
-    /*
     // relay init
     if (gpio_init(pin_out, GPIO_OUT)) {
         printf("Error to initialize GPIO_PIN(%d %d)\n", PORT_B, 5);
         return -1;
     }
-    puts("Relay's Pin Initialized\n");
+    //puts("Relay's Pin Initialized\n");
     gpio_set(pin_out);
 
     // display init
@@ -385,26 +379,24 @@ int init_components(void){ //initialize all components
         printf("Failed to initialize to DHT sensor\n");
         return -1;
     }
-    printf("DHT Sensor Initialized\n");
+    //printf("DHT Sensor Initialized\n");
 
     // Seesaw init
     if (seesaw_soil_init(&seesaw_device, &seesaw_soil_params[0]) != SEESAW_SOIL_OK){
         printf("Failed to initialize soil sensor\n");
         return -1;
     }
-    printf("Soil Moisture Initialized\n");
-*/
+    //printf("Soil Moisture Initialized\n");
+
     if (loramac_init() == 1){
         printf("Failed to init the LoRa\n");
         return 1;
     }
-    printf("LoRa initialized\n");
+    //printf("LoRa initialized\n");
     return 0;
-    
 }
 
-int main(void)
-{
+int main(void){
 
     puts("Smart Irrigation System");
     puts("=====================================");
@@ -415,17 +407,15 @@ int main(void)
 
     //Starting Thread that handles temperature and humidity measurement
     thread_create(temperature_stack,sizeof(temperature_stack),THREAD_PRIORITY_MAIN -1, 0,read_temperature_humidity, NULL, "temp_sensor_logic");
-    puts("Temperature Thread Started");
+    //puts("Temperature Thread Started");
 
     //Starting Thread that handles soil moisture measurement
     thread_create(soil_stack,sizeof(soil_stack),THREAD_PRIORITY_MAIN -1, 0,read_soil, NULL, "soil_sensor_logic");
-    puts("Soil Thread Started");
-
+    //puts("Soil Thread Started");
 
     //Starting Thread that handles display
     thread_create(display_stack,sizeof(display_stack),THREAD_PRIORITY_MAIN -1, 0,display_logic, NULL, "display_logic");
-    printf("Display Thread Started\n");
-
+    //printf("Display Thread Started\n");
 
     return 0;
 }
