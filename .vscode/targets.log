@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri May 27 08:07:35 2022
+# Make data base, printed on Fri May 27 09:59:55 2022
 
 # Variables
 
@@ -135,7 +135,7 @@ ROS_DISTRO = noetic
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 3306
+GIO_LAUNCHED_DESKTOP_FILE_PID = 12076
 # automatic
 %F = $(notdir $%)
 # environment
@@ -205,7 +205,7 @@ SHLVL = 0
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-b2df14a3-67f4-46ab-bcaa-8fa48e2be8e4.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-5c32c1a3-36fd-4c70-8586-218b38538d43.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -293,14 +293,14 @@ LC_ADDRESS = it_IT.UTF-8
 # environment
 LANG = C
 # environment
-VSCODE_PID = 3350
+VSCODE_PID = 12127
 # variable set hash-table stats:
- 
-make: *** No rule to make target 'all'.  Stop.
-
 # Load=142/1024=14%, Rehash=0, Collisions=24/164=15%
 
 # Pattern-specific Variable Values
+
+ 
+make: *** No rule to make target 'all'.  Stop.
 
 # No pattern-specific variable values.
 
@@ -364,6 +364,6 @@ GNUmakefile:
 # strcache performance: lookups = 22 / hit rate = 13%
 # hash-table stats:
 # Load=19/8192=0%, Rehash=0, Collisions=1/22=5%
-# Finished Make data base on Fri May 27 08:07:35 2022
+# Finished Make data base on Fri May 27 09:59:55 2022
 
  

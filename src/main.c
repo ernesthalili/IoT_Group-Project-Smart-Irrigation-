@@ -291,7 +291,7 @@ static void send_message(char* message){
 
             timex_t prima, dopo;
             xtimer_now_timex(&prima);
-            sending_messages = semtech_loramac_send(&loramac,(uint8_t *)message, strlen(message)); 
+            //sending_messages = semtech_loramac_send(&loramac,(uint8_t *)message, strlen(message)); 
             xtimer_now_timex(&dopo);
             //printf("Sending message '%s'  for : %d microseconds\n",message, dopo.microseconds-prima.microseconds);
 
@@ -388,10 +388,10 @@ int init_components(void){ //initialize all components
     }
     //printf("Soil Moisture Initialized\n");
 
-    if (loramac_init() == 1){
+    /*if (loramac_init() == 1){
         printf("Failed to init the LoRa\n");
         return 1;
-    }
+    }*/
     //printf("LoRa initialized\n");
     return 0;
 }

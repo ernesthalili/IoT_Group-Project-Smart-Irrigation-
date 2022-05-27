@@ -46,6 +46,8 @@ Demo
 
 [Presentation](https://www.canva.com/design/DAE-a1W0QuQ/ajFGjsr9k0angRBRUVlvXw/view?utm_content=DAE-a1W0QuQ&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink)
 
+[DashBoard](https://carlocarugno123.retool.com/embedded/public/db64e1e8-d885-488d-b852-19d651fb29af)
+
 ## Blog post
 
 [Blog post](LINK HERE)
