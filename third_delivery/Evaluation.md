@@ -76,7 +76,9 @@ The system makes one join request every time it is active and uses the radio to 
 
 <img width="300" alt="image" src="images/communication_consumption.png">
 
-The moment when we are spending more is when we irrigate the water. The time of irrigation depends on how the weather and soil conditions are. During this period, the system uses 147 mA.
+The moment when we are spending more is when we irrigate the water. The time of irrigation depends on how the weather and soil conditions are. During this period, the system uses 147.7 mA.
+
+<img width="300" alt="image" src="images/pump_cunsumption.png">
 
 **What can we do better?**
 We have noticed that the component that consumes the most is the display. So it is taken under consideration to use another type(with less power consumption) in order to reduce it consumption up to 50%.
@@ -100,6 +102,10 @@ Soil moisture type message :
 Irrigation type message :
 - xxx = irrigation time
 - payload = Ixxx
+
+There is shown a photo how the dashboard looks. It has 3 charts which visualize the values taken from the table. The most left table contains values about the air temperature, the middle table have values of the different values of soil moisture and the most right one contains the water amount irrigated each time. The reason why we are interested about the total amount of water irrigated is to see how much we are actually improving with respect to the normal irrigation. 
+
+<img width="700" alt="image" src="images/dashboard_visualization.png">
  
  
 ## Analysis on radio usage

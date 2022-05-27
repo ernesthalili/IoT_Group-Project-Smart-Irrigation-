@@ -1,6 +1,4 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'all'.  Stop.
-
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -8,7 +6,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu May 26 23:29:13 2022
+# Make data base, printed on Fri May 27 08:07:35 2022
 
 # Variables
 
@@ -51,7 +49,7 @@ SNAP_DATA = /var/snap/code/97
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:67971
+JOURNAL_STREAM = 8:66294
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -83,7 +81,7 @@ _ = /snap/code/97/usr/share/code/code
 # environment
 ROS_PACKAGE_PATH = /opt/ros/noetic/share
 # environment
-MANAGERPID = 2270
+MANAGERPID = 2258
 # environment
 ROS_PYTHON_VERSION = 3
 # environment
@@ -103,7 +101,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/u20-04:@/tmp/.ICE-unix/2501,unix/u20-04:/tmp/.ICE-unix/2501
+SESSION_MANAGER = local/u20-04:@/tmp/.ICE-unix/2491,unix/u20-04:/tmp/.ICE-unix/2491
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -123,7 +121,7 @@ DISABLE_WAYLAND = 1
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = dc5b3cfe966d4c65bf44a0ab53cac3ed
+INVOCATION_ID = cd79d245c33d4a7f994e356f8fc9456e
 # environment
 GDK_PIXBUF_MODULEDIR = /snap/code/97/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
 # default
@@ -137,7 +135,7 @@ ROS_DISTRO = noetic
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 4107
+GIO_LAUNCHED_DESKTOP_FILE_PID = 3306
 # automatic
 %F = $(notdir $%)
 # environment
@@ -151,7 +149,7 @@ PWD = /home/e_r_n_e_s_t/Documents/magistrale/Engineering_in_Computer_Science/fir
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 2463
+SSH_AGENT_PID = 2454
 # environment
 PKG_CONFIG_PATH = /opt/ros/noetic/lib/pkgconfig
 # environment
@@ -173,7 +171,7 @@ VSCODE_CODE_CACHE_PATH = /home/e_r_n_e_s_t/.config/Code/CachedData/c3511e6c69bb3
 # environment
 LOGNAME = e_r_n_e_s_t
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # environment
 SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void
 # environment
@@ -207,7 +205,7 @@ SHLVL = 0
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-ae0f4912-46b9-4af3-84c7-dad0ec7efceb.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-b2df14a3-67f4-46ab-bcaa-8fa48e2be8e4.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -279,7 +277,6 @@ GJS_DEBUG_TOPICS = JS ERROR;JS LOG
 # default
 SUFFIXES := 
 # environment
- 
 SNAP_REEXEC = 
 # environment
 CHROME_DESKTOP = code-url-handler.desktop
@@ -293,13 +290,14 @@ GJS_DEBUG_OUTPUT = stderr
 .RECIPEPREFIX := 
 # environment
 LC_ADDRESS = it_IT.UTF-8
- 
 # environment
 LANG = C
 # environment
-VSCODE_PID = 4157
+VSCODE_PID = 3350
 # variable set hash-table stats:
  
+make: *** No rule to make target 'all'.  Stop.
+
 # Load=142/1024=14%, Rehash=0, Collisions=24/164=15%
 
 # Pattern-specific Variable Values
@@ -366,6 +364,6 @@ GNUmakefile:
 # strcache performance: lookups = 22 / hit rate = 13%
 # hash-table stats:
 # Load=19/8192=0%, Rehash=0, Collisions=1/22=5%
-# Finished Make data base on Thu May 26 23:29:13 2022
+# Finished Make data base on Fri May 27 08:07:35 2022
 
  

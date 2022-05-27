@@ -166,8 +166,19 @@ This is how we are going to measure the accuracy of the irrigation compared to t
 ### DHT22 and Adafruit Seesaw soil moisture sensors
 Since testing the system with real sampling rates would take a lot of time, we consider the sampling rate in terms of seconds. The way we are going to observe some eventual anomalies is by reading values for a short amount of time (1 minute) in different periods of the day(morning, noon, evening, night). 
 
+### Future Plans
+Future improvements are considered to be done with the project. They would improve the system behaviour and lead to more accurate results. 
 
+#####1. Machine Learning Algorithm
+The machine learning algorithm could be a very good improvement in 2 cases of the system. The major problem is to find a way on sampling when needed and try to have the best lifetime in order to reach the constraints and why not to surpass them. The improvements that could be done in this case is to use a machine learning to decide the sampling time of the sensors. Since why may notice in some cases the changes are not very relevant, so it would be better to let the system sleep when we are in these conditions. 
+Another case when we can use machine learning is to decide the right amount of water irrigated in a certain case. These values would depend on some data we where the situation is described on the base of the temperature values, soil moisture and the type of the plant we are considering and the soil texture. In this way, we would have a more accurate value of water irrigated and we would solve the problem of cosidering different plants and soil texture. 
 
-    
+<img width="276" alt="image" src="images/machine_learning_image.png">
+
+#####2. Solar Panels
+Another way to improve the battery lifetime is to implements a system that has also a solar panel. The environment is perfect for this implementations since the system will be placed in a space where it is exposed to the sun. 
+This would remove the cocern about the battery lifetime. 
+
+<img width="276" alt="image" src="images/solar_panel.png">
     
     

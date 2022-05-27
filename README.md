@@ -25,6 +25,13 @@ In future, the system could be extended from small plants located in jars into a
 - [Evaluation](https://github.com/ernesthalili/IoT_Group-Project/blob/main/second_delivery/Evaluation.md)
 
 
+## Documents 3nd Delivery
+
+- [Concept](https://github.com/ernesthalili/IoT_Group-Project/blob/main/third_delivery/Concept.md)
+- [Technology](https://github.com/ernesthalili/IoT_Group-Project/blob/main/third_delivery/Technology.md)
+- [Evaluation](https://github.com/ernesthalili/IoT_Group-Project/blob/main/third_delivery/Evaluation.md)
+
+
 ## Videos
 1st Delivery
 - [Concept](https://youtu.be/OTDYbn3pogg)
@@ -33,10 +40,11 @@ In future, the system could be extended from small plants located in jars into a
 
 Demo
 - [First Demo](https://youtu.be/56cYhfHVaiQ)
+- [Final Demo](https://www.youtube.com/watch?v=Aaq7NCqcl70&t=1s&ab_channel=CarloCarugno)
 
 ## Presentation
 
-[Presentation](https://www.canva.com/design/DAE-a1W0QuQ/ajFGjsr9k0angRBRUVlvXw/view?utm_content=DAE-a1W0QuQ&utm_campaign=designshare&utm_medium=link&utm_source=publishpresent)
+[Presentation](https://www.canva.com/design/DAE-a1W0QuQ/ajFGjsr9k0angRBRUVlvXw/view?utm_content=DAE-a1W0QuQ&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink)
 
 ## Blog post
 
